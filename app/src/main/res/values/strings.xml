@@ -3,6 +3,16 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="snackbar">This App is part of "Android Developer Nanodegree"</string>
+    <string name="trailer_btn">Show Trailer</string>
+    <string name="reviews_btn">Show Reviews</string>
+    <string name="favorite_btn">Add to Favorites</string>
+    <string name="pref_favorite_key" translatable="false">favorite_key</string>
+    <string name="welcome_to_the_app">
+        Welcome to Your Movy App ...
+    </string>
+    <string name="welcome_to_the_app_choose_a_movy">
+        Could You Please Choose a Movy from the List to know more about it!!!
+    </string>
 
     <!-- Strings related to Settings -->
 
@@ -51,4 +61,6 @@
     <string name="pref_ringtone_silent">Silent</string>
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_detail">"Movy Deatail "</string>
+    <string name="title_activity_d__review">Review</string>
+    <string name="title_activity_d__empty">Welcome</string>
 </resources>

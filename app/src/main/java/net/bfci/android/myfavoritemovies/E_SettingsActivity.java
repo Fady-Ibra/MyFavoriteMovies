@@ -16,6 +16,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
@@ -34,7 +35,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class C_SettingsActivity extends C_AppCompatPreferenceActivity {
+public class E_SettingsActivity extends E_AppCompatPreferenceActivity {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -198,7 +199,7 @@ public class C_SettingsActivity extends C_AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), C_SettingsActivity.class));
+                startActivity(new Intent(getActivity(), E_SettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -228,7 +229,7 @@ public class C_SettingsActivity extends C_AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), C_SettingsActivity.class));
+                startActivity(new Intent(getActivity(), E_SettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -258,10 +259,17 @@ public class C_SettingsActivity extends C_AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), C_SettingsActivity.class));
+                startActivity(new Intent(getActivity(), E_SettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Nullable
+    @Override
+    public Intent getParentActivityIntent() {
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 }

@@ -4,8 +4,10 @@
 
 package net.bfci.android.myfavoritemovies;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -34,11 +36,48 @@ public class Z_FetchMovyTask extends AsyncTask<String, Void, String[]> {
     @Override
     protected String[] doInBackground(String... params) {
 
-        //specify sort criteria
-        String sort = Z_Constants.POPULAR;
-        if(params[0]!=null && params[0].equals(Z_Constants.TOP_RATED)){
-            sort = Z_Constants.TOP_RATED;
+        //specify sortBy criteria
+        String sortBy = X_Constants.POPULAR;
+        if(params[0]!=null){
+            if(params[0].equals(X_Constants.TOP_RATED)){
+                sortBy = X_Constants.TOP_RATED;
+            }else if(params[0].equals(X_Constants.FAVORITE)){
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mainActivityFragment.getActivity());
+                String favorite = preferences.getString(mainActivityFragment.getActivity().getString(R.string.pref_favorite_key), "[]");
+                try {
+                    JSONArray favoriteJsonArray= new JSONArray(favorite);
+                    JSONArray allMoviewJsonArray = new JSONArray();
+                    for(int i=0; i< favoriteJsonArray.length(); i++){
+                        sortBy=favoriteJsonArray.getJSONObject(i).getString(X_Constants.MOVY_ID_PARAM_NAME);
+                        String str = getMovyDataAsStr(sortBy);
+                        if(str!=null){
+                            allMoviewJsonArray.put(new JSONObject(str));
+                        }
+                    }
+                    return getMoviesDataFromJson(allMoviewJsonArray);
+                }catch (JSONException e){
+                    Log.e(LOG_TAG, e.getMessage(), e);
+                    e.printStackTrace();
+                }
+            }
+
         }
+        String str = getMovyDataAsStr(sortBy);
+        if(str!=null){
+            try {
+                return getMoviesDataFromJson(new JSONObject(str)
+                        .getJSONArray(X_Constants.RESULTS_PARAM_NAME));
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+        }
+
+        // This will only happen if there was an error getting or parsing the forecast.
+        return null;
+    }
+
+    private String getMovyDataAsStr(String relativePath){
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -50,9 +89,9 @@ public class Z_FetchMovyTask extends AsyncTask<String, Void, String[]> {
 
         // Construct the URL for the themoviedb.org query
         try {
-            String apiUrlUsed = Z_Constants.API_BASE_URL+sort+"?";
+            String apiUrlUsed = X_Constants.API_BASE_URL+relativePath+"?";
             Uri builtUri = Uri.parse(apiUrlUsed).buildUpon()
-                    .appendQueryParameter(Z_Constants.APP_KEY_PARAM_NAME, Z_Constants.API_KEY)
+                    .appendQueryParameter(X_Constants.APP_KEY_PARAM_NAME, X_Constants.API_KEY)
                     .build();
             URL url = new URL(builtUri.toString());
 
@@ -82,7 +121,7 @@ public class Z_FetchMovyTask extends AsyncTask<String, Void, String[]> {
                 // Stream was empty.  No point in parsing.
                 return null;
             }
-            movyJsonString = buffer.toString();
+            return buffer.toString();
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
@@ -101,19 +140,6 @@ public class Z_FetchMovyTask extends AsyncTask<String, Void, String[]> {
                 }
             }
         }
-
-        //
-        try {
-            return getMoviesDataFromJson(new JSONObject(movyJsonString)
-                    .getJSONArray(Z_Constants.RESULTS_PARAM_NAME));
-            //return  moviesArray;
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
-        }
-
-        // This will only happen if there was an error getting or parsing the forecast.
-        return null;
     }
 
     private String[] getMoviesDataFromJson(JSONArray movyJsonArray) throws JSONException{
@@ -131,9 +157,9 @@ public class Z_FetchMovyTask extends AsyncTask<String, Void, String[]> {
             String[] imgFullPathStrArray = new String[movyStrArray.length];
             for(int i = 0; i<movyStrArray.length; i++){
                 try {
-                    imgFullPathStrArray[i]=Uri.parse(Z_Constants.IMG_BASE_URL).buildUpon()
+                    imgFullPathStrArray[i]=Uri.parse(X_Constants.IMG_BASE_URL).buildUpon()
                             .appendEncodedPath(new JSONObject(movyStrArray[i])
-                                    .getString(Z_Constants.IMG_PATH_PARAM_NAME))
+                                    .getString(X_Constants.IMG_PATH_PARAM_NAME))
                             .build().toString();
                 }  catch (JSONException e) {
                     Log.e(LOG_TAG, e.getMessage(), e);

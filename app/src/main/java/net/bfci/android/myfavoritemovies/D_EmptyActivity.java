@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class B_DetailActivity extends AppCompatActivity {
+public class D_EmptyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.b_activity_detail);
+        setContentView(R.layout.d_activity_empty);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -20,20 +20,12 @@ public class B_DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar
-                        .make(view, getString(R.string.snackbar), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, getString(R.string.snackbar), Snackbar.LENGTH_LONG)
                         //.setAction("Action", null)
-                        .show();
+                          .show();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.movy_detail_container, new B_DetailActivityFragment())
-                    .commit();
-        }
-
     }
 
 }

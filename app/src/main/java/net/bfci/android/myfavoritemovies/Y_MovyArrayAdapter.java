@@ -15,14 +15,14 @@ import java.util.ArrayList;
  * Created by fady on 5/28/16.
  */
 
-public class Z_MovyArrayAdapter extends ArrayAdapter {
+public class Y_MovyArrayAdapter extends ArrayAdapter {
 
     private Context context;
     private ArrayList<String> imageUrls;
     private LayoutInflater inflater;
 
-    public Z_MovyArrayAdapter(Context context, ArrayList<String> imageUrls) {
-        super(context, R.layout.z_grid_item, imageUrls);
+    public Y_MovyArrayAdapter(Context context, ArrayList<String> imageUrls) {
+        super(context, R.layout.a_grid_item, imageUrls);
         this.context = context;
         this.imageUrls = imageUrls;
         inflater = LayoutInflater.from(context);
@@ -31,7 +31,7 @@ public class Z_MovyArrayAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (null == convertView) {
-            convertView = inflater.inflate(R.layout.z_grid_item, parent, false);
+            convertView = inflater.inflate(R.layout.a_grid_item, parent, false);
         }
         Picasso.with(context)
                 .load(imageUrls.get(position).toString())
